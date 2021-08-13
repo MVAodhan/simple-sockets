@@ -21,24 +21,21 @@
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
     <script src='/socket.io/socket.io.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
     <script>
-        const socket =io()
-        
-        const form = document.getElementById('form')
+        const socket =io()        
         const input = document.getElementById('input')
 
-        form.addEventListener('submit', (e) => {
+        $('#form').submit(e => {
             e.preventDefault()
 
             if(input.value){
                 socket.emit('chat message', input.value)
                 input.value = ''
             }
-
         })
-
         socket.on("chat message", (msg)=>{
-            console.log(msg)
+            $('#messages').append(`<div>${msg}</div>`)
         })
     </script>
   </body>
