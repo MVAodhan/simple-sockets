@@ -9,8 +9,8 @@ const io = new Server(server);
 
 io.on("connection", (socket) => {
   console.log("user connected");
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg);
+  socket.on("chat message", ({ from, text}) => {
+    io.emit("chat message", {from, text});
   });
   socket.on("disconnect", () => console.log("user disconnected"));
 });
