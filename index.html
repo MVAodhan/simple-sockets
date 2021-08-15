@@ -4,11 +4,17 @@
 <head>
   <title>Socket.IO chat</title>
   <style>
-    body {
+    *{
       margin: 0;
-      padding-bottom: 3rem;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 0;
+      box-sizing: border-box;
     }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      width: 100vw;
+      height: 90vh;
+    }
+    
 
     #form {
       background: rgba(0, 0, 0, 0.15);
@@ -18,7 +24,7 @@
       left: 0;
       right: 0;
       display: flex;
-      height: 3rem;
+      height: 10vh;
       box-sizing: border-box;
       backdrop-filter: blur(10px);
     }
@@ -60,36 +66,35 @@
     }
   </style>
 </head>
+  <body>
+      <div>
+        <ul id='users'></ul>
+      </div>
+      <div>
+        <ul id="messages"></ul>
+        <form id="form" action="">
+          <input id="input" autocomplete="off" /><button>Send</button>
+        </form>
+      </div>
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script >
+    const socket = io()
 
-<body>
-  <main>
-    <ul id="messages"></ul>
-    <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
-  </main>
+      let userName = window.prompt("Enter your username", "")
+      const input = document.querySelector('#input')
+      
+      $('#form').submit(e => {
+        e.preventDefault()
 
-
-  <script src='/socket.io/socket.io.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
-  <script >
-  const socket = io()
-
-    let userName = window.prompt("Enter your username", "")
-    const input = document.querySelector('#input')
-    
-    $('#form').submit(e => {
-      e.preventDefault()
-
-      if (input.value) {
-        socket.emit('chat message', {from: userName, text: input.value})
-        input.value = ''
-      }
-    })
-    socket.on("chat message", (msg) => {
-      $('#messages').append(`<span style="color:${userName===msg.from ?'green':'red'}">${msg.from}: </span>${msg.text} `)
-    })
-  </script>
+        if (input.value) {
+          socket.emit('chat message', {from: userName, text: input.value})
+          input.value = ''
+        }
+      })
+      socket.on("chat message", (msg) => {
+        $('#messages').append(`<span style="color:${userName===msg.from ?'green':'red'}">${msg.from}: </span>${msg.text} `)
+      })
+    </script>
   </body>
-
 </html>
