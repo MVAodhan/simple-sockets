@@ -39,6 +39,27 @@
       flex-direction: column;
     }
 
+    .message{
+      display: flex;
+      flex-direction: row;
+      margin-right: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      align-items: center;
+      justify-content: flex-end;
+      max-width: 80vw;
+    }
+
+    .message-text{
+      background-color: #1fb30b;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      color: white;
+      border-radius: 15px;
+    }
+
     #form {
       width: 100%;
       background: rgba(0, 0, 0, 0.15);
@@ -82,8 +103,6 @@
       font-size: 1.5rem;
     }
     
-
-    
   </style>
 </head>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
@@ -93,7 +112,7 @@
       </div>
       <div id='right-container'>
         <div id='messages-container'>
-          <ul id="messages"></ul>  
+          <div id="messages"></div>  
         </div>
         <form id="form" action="">
           <input id="input" autocomplete="off" /><button><i class="far fa-paper-plane"></i></button>
@@ -104,7 +123,8 @@
     <script >
       const socket = io()
 
-      let userName = window.prompt("Enter your username", "")
+      let userName = 'aodhan';
+      // window.prompt("Enter your username", "")
       const input = document.querySelector('#input')
       
       $('#form').submit(e => {
@@ -116,8 +136,10 @@
         }
       })
       socket.on("chat message", (msg) => {
-        $('#messages').append(`<ul ><span>${msg.text}</span>: <span style="color:${userName===msg.from ?"green":"red"}">${msg.from}</span></ul> `)
+        $('#messages').append(`<div class="message"><div class="message-text">${msg.text}</div></div> `)
       })
+
+      // : <span style="color:${userName===msg.from ?"green":"red"}">${msg.from}</span>
     </script>
   </body>
 </html>
