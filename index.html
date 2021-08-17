@@ -12,18 +12,14 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       width: 100vw;
-      height: 90vh;
+      height: 100vh;
       display: flex;
       flex-direction: row;
     }
 
-    #left-container{
-      height: 100%;
-      width: 15vw;
-    }
-
-    #right-container {
-      width: 80vw;
+    
+    #body-container {
+      width: 100vw;
       height: 100%;
       display: flex;
       justify-content: center;
@@ -31,37 +27,48 @@
       display: flex;
       flex-direction: column;
     }
+
     #messages-container {
-      width: 100%;
+      width: 60%;
       height: 80%;
       border: 1px solid black;
       display: flex;
       flex-direction: column;
     }
 
-    .message{
+    .message-div{
       display: flex;
       flex-direction: row;
-      margin-right: 20px;
       margin-top: 20px;
       margin-bottom: 20px;
       align-items: center;
-      justify-content: flex-end;
       max-width: 80vw;
+      word-wrap: break-word;
     }
 
     .message-text{
-      background-color: #1fb30b;
       padding-left: 10px;
       padding-right: 10px;
       padding-top: 5px;
       padding-bottom: 5px;
-      color: white;
       border-radius: 15px;
+      max-width: 60%;
+    }
+
+    .my-message-text{
+      background-color: #1fb30b;
+      margin-right: 20px;
+      color: white;
+    }
+
+    .their-message-text{
+      background-color: #EFF3F4;
+      margin-left: 20px;
+      color: rgb(0, 0, 0);
     }
 
     #form {
-      width: 100%;
+      width: 60%;
       background: rgba(0, 0, 0, 0.15);
       padding: 0.25rem;
       bottom: 0;
@@ -107,10 +114,7 @@
 </head>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
   <body>
-      <div id='left-container'>
-        <ul id='users'></ul>
-      </div>
-      <div id='right-container'>
+      <div id='body-container'>
         <div id='messages-container'>
           <div id="messages"></div>  
         </div>
@@ -123,8 +127,8 @@
     <script >
       const socket = io()
 
-      let userName = 'aodhan';
-      // window.prompt("Enter your username", "")
+      // let userName = 'aodhan';
+      const userName = window.prompt("Enter your username", "")
       const input = document.querySelector('#input')
       
       $('#form').submit(e => {
@@ -136,7 +140,9 @@
         }
       })
       socket.on("chat message", (msg) => {
-        $('#messages').append(`<div class="message"><div class="message-text">${msg.text}</div></div> `)
+        $('#messages').append(`<div class="message-div" style="justify-content: ${userName===msg.from ? "flex-end" : "flex-start"}">
+          <div class="message-text ${userName===msg.from ? "my-message-text" : "their-message-text"}">
+          ${msg.text}</div></div> `)
       })
 
       // : <span style="color:${userName===msg.from ?"green":"red"}">${msg.from}</span>
